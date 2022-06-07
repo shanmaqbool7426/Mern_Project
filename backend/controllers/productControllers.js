@@ -1,5 +1,6 @@
 const { status } = require("express/lib/response")
 const Product = require("../Models/productModel")
+const Apifeatures = require("../utils/apifeatures")
 const ErrorHandler = require("../utils/errorHandler")
 //just Admin add create product
 exports.createProduct = async (req, res, next) => {
@@ -18,7 +19,8 @@ exports.createProduct = async (req, res, next) => {
 
 exports.getAllProducts = async (req, res) => {
     try {
-        const product = await Product.find();
+        const apifeatures = new Apifeatures(Product.find(), req.query).serch();
+        const product = await apifeatures.query
         res.status(201).json({ success: true, product })
     } catch (error) {
         console.log(error)
